@@ -5,7 +5,6 @@ export default class BirdEngine {
   private gravity: number;
   private jumpHeight: number;
   private gameInterval: NodeJS.Timeout | null;
-  private pipeInterval: NodeJS.Timeout | null;
   private updateCallbacks: UpdateCallback[];
 
   constructor() {
@@ -13,7 +12,6 @@ export default class BirdEngine {
     this.gravity = 20;
     this.jumpHeight = 150;
     this.gameInterval = null;
-    this.pipeInterval = null;
     this.updateCallbacks = [];
   }
 
@@ -24,7 +22,7 @@ export default class BirdEngine {
   }
 
   private updateGame(): void {
-    if (this.birdHeight + 185 < window.outerHeight) {
+    if (this.birdHeight + 185 < window.innerHeight) {
       this.birdHeight += this.gravity;
       this.notifyUpdate();
     }
@@ -43,16 +41,9 @@ export default class BirdEngine {
     this.updateCallbacks.push(callback);
   }
 
-  public clearCallbacks(): void {
-    this.updateCallbacks = [];
-  }
-
   public stopGameLoop(): void {
     if (this.gameInterval) {
       clearInterval(this.gameInterval);
-    }
-    if (this.pipeInterval) {
-      clearInterval(this.pipeInterval);
     }
   }
 }

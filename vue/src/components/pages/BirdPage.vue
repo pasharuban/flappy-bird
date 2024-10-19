@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BirdModel :birdPosition="birdHeight" />
+    <BirdModel :birdPosition="birdHeight" ref="bird" />
   </div>
 </template>
 
@@ -19,24 +19,22 @@ export default {
   },
   mounted() {
     this.birdEngine = new BirdEngine();
-
     this.birdEngine.onUpdate((newHeight) => {
       this.birdHeight = newHeight;
     });
-
-    document.addEventListener("keyup", this.handleKeyup);
-
-    this.birdEngine.startGameLoop();
+    window.addEventListener("keydown", this.handleKeyDown);
   },
   beforeDestroy() {
-    this.birdEngine.stopGameLoop();
+    window.removeEventListener("keydown", this.handleKeyDown);
   },
   methods: {
-    handleKeyup(event) {
-      if (event.key === " ") {
+    handleKeyDown(event) {
+      if (event.code === "Space") {
         this.birdEngine.birdFly();
       }
     },
   },
 };
 </script>
+
+<style scoped></style>
